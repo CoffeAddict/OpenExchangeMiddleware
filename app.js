@@ -31,8 +31,9 @@ app.post('/login', function(req, res) {
     const auth = req.query
 
     if (auth.user == process.env.AUTH_USER && auth.password == process.env.AUTH_PASSWORD) {
+        const save = !!auth.save
         res.json({
-            token: generateAccessToken()
+            token: generateAccessToken(save)
         })
     } else {
         returnError(res, 401, 'Invalid Credentials')
@@ -111,8 +112,9 @@ app.listen(port, () => {
     console.log(`Open Exchange Middleware Running...`)
 })
 
-function generateAccessToken () {
-    return jwt.sign({user: process.env.AUTH_USER}, process.env.JWT_TOKEN, {expiresIn: '20m'});
+function generateAccessToken (save) {
+    let time = save ? '30d' : '1h'
+    return jwt.sign({user: process.env.AUTH_USER}, process.env.JWT_TOKEN, {expiresIn: time});
 }
 
 function checkAccessToken (req) {
