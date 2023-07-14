@@ -73,6 +73,9 @@ app.get('/historic', function(req, res, next) {
     // Check token's validation
     if (!checkAccessToken(req) && !devENV) {returnError(res, 403, 'Unauthorized'); return}
 
+    // Check parameters
+    if (!req.query.date && !req.query.dates) {returnError(res, 400, 'Bad Request'); return}
+
     // Apply format to parameters
     delete req.query.token
 
