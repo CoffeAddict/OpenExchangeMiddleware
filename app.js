@@ -22,6 +22,7 @@ app.use(cors({
     Params:
         user <string> - required
         password <string> - required
+        save <boolean> - optional // Save the login for 30d
 */
 app.post('/login', function(req, res) {
     // Check request paremeters
