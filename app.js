@@ -79,7 +79,7 @@ app.get('/historic', function(req, res, next) {
     // Apply format to parameters
     delete req.query.token
 
-    // Create string with parameters and add API Token
+    // Create params and make request
     const qParams = req.query
     const params = new URLSearchParams()
     params.append('app_id', apiKEY)
