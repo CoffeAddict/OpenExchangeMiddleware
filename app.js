@@ -33,7 +33,7 @@ app.post('/login', function(req, res) {
     }
 })
 
-app.get('/currencies', function(req, res) { // get currency
+app.get('/currencies', function(req, res, next) { // get currency
     // Check token's validation
     if (!checkAccessToken(req) && !devENV) {returnError(res, 403, 'Unauthorized'); return}
 
@@ -44,12 +44,12 @@ app.get('/currencies', function(req, res) { // get currency
     const params = new URLSearchParams(req.query)
     params.append('app_id', apiKEY)
 
-    fetch(`${apiURL}/currencies.json?${params}`, {
-        method: 'GET'
-    })
+    fetch(`${apiURL}/currencies.json?${params}`)
     .then(resp => resp.json())
     .then(data => res.send(data))
+    .catch(err => next(err))
 })
+
 
 // Send non existent GET request to 404
 app.get('*', function(req, res){
