@@ -68,8 +68,7 @@ app.get('/currencies', function(req, res, next) { // get currency
     Params:
         base <string> - optional // Base currency, default is USD - only available for paid plans
         symbols <string[]> - optional // Limit return currencies list
-        date <string (yyyy-mm-dd)> - optional // Get specific date exchage rates
-        dates <string[] (yyyy-mm-dd)> - optional // Get exchange rates from multiple dates
+        date <string> - required // Get specific date exchage rates - ex: 2023-10-31,2023-05-03
 */
 app.get('/historic', function(req, res, next) {
     // Check token's validation
@@ -88,7 +87,7 @@ app.get('/historic', function(req, res, next) {
     if (qParams.base) params.append('base', qParams.base)
     if (qParams.symbols) params.append('symbols', qParams.symbols)
 
-    const dates = qParams.date ? [qParams.date] : qParams.dates
+    const dates = qParams.dates.split(',')
 
     let fetchBuffer = []
 
@@ -96,7 +95,9 @@ app.get('/historic', function(req, res, next) {
         fetchBuffer.push(fetch(`${apiURL}/historical/${date}.json?${params}`).then(resp => resp.json()))
     }
 
-    Promise.all(fetchBuffer).then(dataList => res.send(dataList))
+    Promise.all(fetchBuffer)
+        .then(dataList => res.send(dataList))
+        .catch(err => next(err))
 })
 
 // Send non existent GET request to 404
