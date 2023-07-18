@@ -31,7 +31,7 @@ app.post('/login', function(req, res) {
     // Compare credentials with dummy login
     const auth = req.query
 
-    if (auth.user == process.env.AUTH_USER && auth.password == process.env.AUTH_PASSWORD) {
+    if (auth.user.toLowerCase() == process.env.AUTH_USER && auth.password == process.env.AUTH_PASSWORD) {
         const save = !!auth.save
         res.json({
             token: generateAccessToken(save)
@@ -67,7 +67,7 @@ app.get('/currencies', function(req, res, next) { // get currency
     Historic
     Params:
         base <string> - optional // Base currency, default is USD - only available for paid plans
-        symbols <string[]> - optional // Limit return currencies list
+        symbols <string> - optional // Request specific currency
         date <string> - required // Get specific date exchage rates - ex: 2023-10-31,2023-05-03
 */
 app.get('/historic', function(req, res, next) {
