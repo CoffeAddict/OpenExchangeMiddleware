@@ -68,7 +68,7 @@ app.get('/currencies', function(req, res, next) { // get currency
     Params:
         base <string> - optional // Base currency, default is USD - only available for paid plans
         symbols <string> - optional // Request specific currency
-        date <string> - required // Get specific date exchage rates - ex: 2023-10-31,2023-05-03
+        dates <string> - required // Get specific date exchage rates - ex: 2023-10-31,2023-05-03
 */
 app.get('/historic', function(req, res, next) {
     // Check token's validation
